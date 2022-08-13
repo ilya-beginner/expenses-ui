@@ -14,7 +14,7 @@
                 // send ajax
                 var $form = $("#form");
                 $.ajax({
-                    url: 'http://localhost:5265/expense', // url where to submit the request
+                    url: 'http://ec2-54-246-69-31.eu-west-1.compute.amazonaws.com:5265/expense', // url where to submit the request
                     type : "POST", // type of action POST || GET
                     dataType : 'json', // data type
                     // data : JSON.stringify($(form).serializeArray() ), // post data || get data
@@ -58,7 +58,7 @@
 <button id="submit">Submit</button> -->
 <!-- <div id="status"></div> -->
 
-<form id="form" action="http://localhost:5265/expense" method="post">
+<form id="form" action="http://ec2-54-246-69-31.eu-west-1.compute.amazonaws.com:5265/expense" method="post">
     <div class="mb-3 mt-3">
         <label for="date" class="form-label">Date:</label>
         <input type="date" class="form-control" id="date" name="date">
