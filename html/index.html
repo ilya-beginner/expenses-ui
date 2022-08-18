@@ -18,8 +18,8 @@
                 document.getElementById("submit").disabled = true;
 
                 $.ajax({
-                    // url: 'http://ec2-54-246-69-31.eu-west-1.compute.amazonaws.com:5265/expense',
-                    url: 'http://localhost:5265/expense',
+                    url: 'http://ec2-54-246-69-31.eu-west-1.compute.amazonaws.com:5265/expense',
+                    // url: 'http://localhost:5265/expense',
                     type : "POST",
                     dataType : 'json',
                     data: JSON.stringify({
