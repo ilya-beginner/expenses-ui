@@ -10,9 +10,16 @@
         $(document).ready(function(){
             $("#submit").on('click', function(){
                 var $form = $("#form");
+
+                document.getElementById("date").disabled = true;
+                document.getElementById("sum").disabled = true;
+                document.getElementById("tag").disabled = true;
+                document.getElementById("notes").disabled = true;
+                document.getElementById("submit").disabled = true;
+
                 $.ajax({
-                    url: 'http://ec2-54-246-69-31.eu-west-1.compute.amazonaws.com:5265/expense',
-                    // url: 'http://localhost:5265/expense',
+                    // url: 'http://ec2-54-246-69-31.eu-west-1.compute.amazonaws.com:5265/expense',
+                    url: 'http://localhost:5265/expense',
                     type : "POST",
                     dataType : 'json',
                     data: JSON.stringify({
@@ -26,10 +33,23 @@
                         document.getElementById("sum").value = "";
                         document.getElementById("tag").value = "";
                         document.getElementById("notes").value = "";
+
+                        document.getElementById("date").disabled = false;
+                        document.getElementById("sum").disabled = false;
+                        document.getElementById("tag").disabled = false;
+                        document.getElementById("notes").disabled = false;
+                        document.getElementById("submit").disabled = false;
+
                         document.getElementById("alert-success").style.display = "block";
                         $("#alert-success").hide(1500);
                     },
                     error: function(xhr, resp, text) {
+                        document.getElementById("date").disabled = false;
+                        document.getElementById("sum").disabled = false;
+                        document.getElementById("tag").disabled = false;
+                        document.getElementById("notes").disabled = false;
+                        document.getElementById("submit").disabled = false;
+
                         document.getElementById("alert-danger").style.display = "block";
                         $("#alert-danger").hide(5000);
                     }
