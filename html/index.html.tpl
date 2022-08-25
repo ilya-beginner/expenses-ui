@@ -53,13 +53,27 @@
   </script>
   <script>
       window.onload= function() {
-          document.getElementById('date').value=(new Date()).toISOString().substr(0,10);
+          tzoffset = (new Date()).getTimezoneOffset() * 60000;
+          localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, 10);
+          document.getElementById('date').value = localISOTime;
           document.getElementById("alert-success").style.display = "none";
           document.getElementById("alert-danger").style.display = "none";
       }
   </script>
 </head>
 <body>
+  <nav class="navbar navbar-expand-sm bg-light">
+    <div class="container-fluid">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Report</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="view.html">View</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
   <div class="container">
     <h1>Report expense</h1>
     <form id="form" action="${EXPENSES_UI_BACKEND_HOST}/expenses" method="post">
