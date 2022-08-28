@@ -6,8 +6,6 @@
   <script>
       $(document).ready(function(){
           $("#submit").on('click', function(){
-              var $form = $("#form");
-
               document.getElementById("date").disabled = true;
               document.getElementById("sum").disabled = true;
               document.getElementById("tag").disabled = true;
@@ -15,8 +13,7 @@
               document.getElementById("submit").disabled = true;
 
               $.ajax({
-                  url: 'http://ec2-54-246-69-31.eu-west-1.compute.amazonaws.com:5265/expense',
-                  // url: 'http://localhost:5265/expense',
+                  url: '${BACKEND_HOST}',
                   type : "POST",
                   dataType : 'json',
                   data: JSON.stringify({
@@ -65,7 +62,7 @@
 <body>
   <div class="container">
     <h1>Report expense</h1>
-    <form id="form" action="http://ec2-54-246-69-31.eu-west-1.compute.amazonaws.com:5265/expense" method="post">
+    <form id="form" action="${BACKEND_HOST}" method="post">
         <div class="mb-3 mt-3">
             <label for="date" class="form-label">Date:</label>
             <input type="date" class="form-control" id="date" name="date">
