@@ -13,7 +13,7 @@
               document.getElementById("submit").disabled = true;
 
               $.ajax({
-                  url: '${BACKEND_HOST}/expenses',
+                  url: '${EXPENSES_UI_BACKEND_HOST}/expenses',
                   type : "POST",
                   dataType : 'json',
                   data: JSON.stringify({
@@ -62,7 +62,7 @@
 <body>
   <div class="container">
     <h1>Report expense</h1>
-    <form id="form" action="${BACKEND_HOST}/expenses" method="post">
+    <form id="form" action="${EXPENSES_UI_BACKEND_HOST}/expenses" method="post">
         <div class="mb-3 mt-3">
             <label for="date" class="form-label">Date:</label>
             <input type="date" class="form-control" id="date" name="date">
