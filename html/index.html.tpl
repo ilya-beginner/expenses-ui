@@ -88,7 +88,7 @@
   <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Expenses</a>
+        <a class="navbar-brand" href="#">Expenses Tracker</a>
       </div>
     </nav>
     <div class="container">
