@@ -4,7 +4,7 @@
   <script>
     async function deleteExpense(id) {
       try {
-        response = await fetch("http://localhost:5265/expenses/" + id.toString(), {method: "DELETE"});
+        response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id.toString(), {method: "DELETE"});
       } catch (err) {
         alert(err);
       }
@@ -13,7 +13,7 @@
   <script>
     async function addExpense(date, sum, currency, tag, notes) {
       try {
-        response = await fetch("http://localhost:5265/expenses", {
+        response = await fetch(""${EXPENSES_UI_BACKEND_HOST}/expenses", {
           method: "POST",
           body: JSON.stringify({
             date: date,
@@ -45,7 +45,7 @@
     async function enumerate() {
       from = document.getElementById('from').value;
       to = document.getElementById('to').value;
-      response = await fetch("http://localhost:5265/expenses?from=" + from + "&to=" + to);
+      response = await fetch(""${EXPENSES_UI_BACKEND_HOST}/expenses?from=" + from + "&to=" + to);
       data = await response.json();
 
       function capitalizeFirstLetter(string) {
