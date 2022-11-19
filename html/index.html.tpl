@@ -195,7 +195,7 @@
         <a class="navbar-brand" href="#">Expense Tracker</a>
       </div>
     </nav>
-    <div class="container">
+    <div class="container-fluid">
       <form id="form" action="${EXPENSES_UI_BACKEND_HOST}/expenses" method="get">
         <div class="row">
           <div class="col mb-3 mt-3">
