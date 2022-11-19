@@ -115,6 +115,10 @@
 
       date = null;
       data.forEach((expense) => {
+        if (expense['date'] != date) {
+          content += '<tr class="table-info"><td colspan="6"><h3>' + expense['date'] + '</h3></td></tr>';
+          date = expense['date'];
+        }
         content += '<tr>';
           columns.forEach((column) => {
           content += '<td>' + expense[column] + '</td>';
