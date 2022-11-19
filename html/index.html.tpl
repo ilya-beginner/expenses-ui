@@ -114,11 +114,42 @@
       content += "</tr></thead>";
 
       date = null;
+      totals_income = {
+        'BYN': 0,
+        'USD': 0,
+        'EUR': 0,
+        'PLN': 0,
+        'RUB': 0
+      };
+      totals_expenses = {
+        'BYN': 0,
+        'USD': 0,
+        'EUR': 0,
+        'PLN': 0,
+        'RUB': 0
+      };
+      totals = {
+        'BYN': 0,
+        'USD': 0,
+        'EUR': 0,
+        'PLN': 0,
+        'RUB': 0
+      };
       data.forEach((expense) => {
         if (expense['date'] != date) {
           content += '<tr class="table-info"><td colspan="6"><h3>' + expense['date'] + '</h3></td></tr>';
           date = expense['date'];
         }
+
+        if (expense['sum'] > 0) {
+          totals_income[expense['currency']] += expense['sum'];
+        }
+        else {
+          totals_expenses[expense['currency']] += Math.abs(expense['sum']);
+        }
+
+        totals[expense['currency']] += expense['sum'];
+
         content += '<tr>';
           columns.forEach((column) => {
           content += '<td>' + expense[column] + '</td>';
@@ -134,6 +165,18 @@
       content += "</table>";
 
       document.getElementById('table').innerHTML = content;
+
+      totals_html = "<h3>Totals</h3>";
+      totals_html += '<table class="table table-striped table-hover table-sm">';
+      totals_html += "<thead><th>Currency</th><th>Income</th><th>Expenses</th><th>Total</th></thead>";
+      totals_html += "<tr><td>BYN</td><td>" + totals_income['BYN'] + "</td><td>" + totals_expenses['BYN'] + "</td><td>" + totals["BYN"] + "</td></tr>";
+      totals_html += "<tr><td>USD</td><td>" + totals_income['USD'] + "</td><td>" + totals_expenses['USD'] + "</td><td>" + totals["USD"] + "</td></tr>";
+      totals_html += "<tr><td>EUR</td><td>" + totals_income['EUR'] + "</td><td>" + totals_expenses['EUR'] + "</td><td>" + totals["EUR"] + "</td></tr>";
+      totals_html += "<tr><td>PLN</td><td>" + totals_income['PLN'] + "</td><td>" + totals_expenses['PLN'] + "</td><td>" + totals["PLN"] + "</td></tr>";
+      totals_html += "<tr><td>RUB</td><td>" + totals_income['RUB'] + "</td><td>" + totals_expenses['RUB'] + "</td><td>" + totals["RUB"] + "</td></tr>";
+      totals_html += "</table>";
+
+      document.getElementById('totals').innerHTML = totals_html;
     }
   </script>
   <script>
@@ -169,6 +212,11 @@
           </div>
         </div>
       </form>
+
+      <br>
+
+      <div id="totals"></div>
+
       <br>
 
       <!-- Button to Open the Add Modal -->
