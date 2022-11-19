@@ -1,6 +1,20 @@
 <html>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <style>
+    .modal-dialog {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .modal-content {
+      height: auto;
+      min-height: 100%;
+      border-radius: 0;
+    }
+  </style> -->
   <script>
     async function deleteExpense(id) {
       try {
@@ -226,7 +240,7 @@
 
       <!-- The Add Modal -->
       <div class="modal" id="addModal">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
 
             <!-- Add Modal Header -->
@@ -238,31 +252,31 @@
             <!-- Add Modal body -->
             <div class="modal-body">
              <form id="form2" action="${EXPENSES_UI_BACKEND_HOST}/expenses" method="post">
-                <div class="mb-3 mt-3">
-                    <label for="date" class="form-label">Date:</label>
-                    <input type="date" class="form-control" id="newDate" name="date">
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Date</span>
+                  <input type="date" class="form-control" id="newDate" name="date">
                 </div>
-                <div class="mb-3">
-                    <label for="sum" class="form-label">Sum:</label>
-                    <input type="number" class="form-control" id="newSum" placeholder="-1.00" name="sum">
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Sum</span>
+                  <input type="number" class="form-control" id="newSum" placeholder="-1.00" name="sum">
                 </div>
-                <div class="mb-3">
-                    <label for="currency" class="form-label">Currency:</label>
-                    <select id="newCurrency" name="currency" form="form2">
-                      <option value="BYN">BYN</option>
-                      <option value="USD">USD</option>
-                      <option value="EUR">EUR</option>
-                      <option value="PLN">PLN</option>
-                      <option value="RUB">RUB</option>
-                    </select>
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Currency</span>
+                  <select id="newCurrency" name="currency" form="form2" class="form-select form-select-lg" aria-label=".form-select-lg example">
+                    <option value="BYN">BYN</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="PLN">PLN</option>
+                    <option value="RUB">RUB</option>
+                  </select>
                 </div>
-                <div class="mb-3">
-                    <label for="tag" class="form-label">Tag:</label>
-                    <input type="text" class="form-control" id="newTag" placeholder="food" name="tag">
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Tag</span>
+                  <input type="text" class="form-control" id="newTag" placeholder="food" name="tag">
                 </div>
-                <div class="mb-3">
-                    <label for="notes" class="form-label">Notes:</label>
-                    <input type="text" class="form-control" id="newNotes" placeholder="bag of walnuts" name="notes">
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Notes</span>
+                  <input type="text" class="form-control" id="newNotes" placeholder="bag of walnuts" name="notes">
                 </div>
             </form>
             </div>
@@ -279,7 +293,7 @@
 
       <!-- The Edit Modal -->
       <div class="modal" id="editModal">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
 
             <!-- Edit Modal Header -->
@@ -292,31 +306,31 @@
             <div class="modal-body">
               <form id="form3" action="${EXPENSES_UI_BACKEND_HOST}/expenses" method="post">
                 <div id="editId"></div>
-                <div class="mb-3 mt-3">
-                    <label for="date" class="form-label">Date:</label>
-                    <input type="date" class="form-control" id="editDate" name="date">
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Date</span>
+                  <input type="date" class="form-control" id="editDate" name="date">
                 </div>
-                <div class="mb-3">
-                    <label for="sum" class="form-label">Sum:</label>
-                    <input type="number" class="form-control" id="editSum" placeholder="-1.00" name="sum">
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Sum</span>
+                  <input type="number" class="form-control" id="editSum" placeholder="-1.00" name="sum">
                 </div>
-                <div class="mb-3">
-                    <label for="currency" class="form-label">Currency:</label>
-                    <select id="editCurrency" name="currency" form="form3">
-                      <option value="BYN">BYN</option>
-                      <option value="USD">USD</option>
-                      <option value="EUR">EUR</option>
-                      <option value="PLN">PLN</option>
-                      <option value="RUB">RUB</option>
-                    </select>
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Currency</span>
+                  <select id="editCurrency" name="currency" form="form3" class="form-select form-select-lg" aria-label=".form-select-lg example">
+                    <option value="BYN">BYN</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="PLN">PLN</option>
+                    <option value="RUB">RUB</option>
+                  </select>
                 </div>
-                <div class="mb-3">
-                    <label for="tag" class="form-label">Tag:</label>
-                    <input type="text" class="form-control" id="editTag" placeholder="food" name="tag">
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Tag</span>
+                  <input type="text" class="form-control" id="editTag" placeholder="food" name="tag">
                 </div>
-                <div class="mb-3">
-                    <label for="notes" class="form-label">Notes:</label>
-                    <input type="text" class="form-control" id="editNotes" placeholder="bag of walnuts" name="notes">
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Notes</span>
+                  <input type="text" class="form-control" id="editNotes" placeholder="bag of walnuts" name="notes">
                 </div>
             </form>
             </div>
