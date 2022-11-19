@@ -16,6 +16,15 @@
     }
   </style> -->
   <script>
+    function formatValue(column, value) {
+      if (column == 'sum') {
+        return value.toFixed(2);
+      }
+
+      return value;
+    }
+  </script>
+  <script>
     async function deleteExpense(id) {
       try {
         response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id.toString(), {method: "DELETE"});
@@ -118,13 +127,13 @@
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
 
-      columns = ["date", "sum", "currency", "tag", "notes"];
+      columns = ["sum", "currency", "tag", "notes"];
 
-      content = '<table id="tmp-table" class="table table-striped table-hover table-sm"><thead><tr>';
+      content = '<table id="tmp-table" class="table table-striped table-hover table-fit"><thead><tr>';
       columns.forEach((column) => {
         content += '<th>' + capitalizeFirstLetter(column) + '</th>';
       });
-      content += '<th></th>';
+      content += '<th style="width:1px; white-space:nowrap;"></th>';
       content += "</tr></thead>";
 
       date = null;
@@ -151,7 +160,7 @@
       };
       data.forEach((expense) => {
         if (expense['date'] != date) {
-          content += '<tr class="table-info"><td colspan="6"><h3>' + expense['date'] + '</h3></td></tr>';
+          content += '<tr class="table-secondary"><td colspan="6"><h3><span class="badge bg-secondary">' + expense['date'] + '</span></h3></td></tr>';
           date = expense['date'];
         }
 
@@ -165,29 +174,43 @@
         totals[expense['currency']] += expense['sum'];
 
         content += '<tr>';
-          columns.forEach((column) => {
-          content += '<td>' + expense[column] + '</td>';
+
+        columns.forEach((column) => {
+          content += '<td>' + formatValue(column, expense[column]) + '</td>';
         });
-        content += '<td>';
-        content += '<div class="btn-toolbar">';
+        content += '<td style="width:1px; white-space:nowrap;">';
+        content += '<div class="btn-group">';
         content += '<button type="button" class="btn btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editModal" onclick="onEdit(' + expense["id"] + ')">Edit</button>';
         content += '<button type="button" class="btn btn-danger" onclick="deleteExpense(' + expense["id"] + ')">Delete</button>';
-        content += '</div>'
-        content += '</td>'
+        content += '</div>';
+        content += '</td>';
         content += '</tr>';
       });
       content += "</table>";
 
       document.getElementById('table').innerHTML = content;
 
+      period_days = (Math.abs(new Date(document.getElementById('to').value) - new Date(document.getElementById('from').value)) + 1) / 86400000;
+
       totals_html = "<h3>Totals</h3>";
       totals_html += '<table class="table table-striped table-hover table-sm">';
-      totals_html += "<thead><th>Currency</th><th>Income</th><th>Expenses</th><th>Total</th></thead>";
-      totals_html += "<tr><td>BYN</td><td>" + totals_income['BYN'] + "</td><td>" + totals_expenses['BYN'] + "</td><td>" + totals["BYN"] + "</td></tr>";
-      totals_html += "<tr><td>USD</td><td>" + totals_income['USD'] + "</td><td>" + totals_expenses['USD'] + "</td><td>" + totals["USD"] + "</td></tr>";
-      totals_html += "<tr><td>EUR</td><td>" + totals_income['EUR'] + "</td><td>" + totals_expenses['EUR'] + "</td><td>" + totals["EUR"] + "</td></tr>";
-      totals_html += "<tr><td>PLN</td><td>" + totals_income['PLN'] + "</td><td>" + totals_expenses['PLN'] + "</td><td>" + totals["PLN"] + "</td></tr>";
-      totals_html += "<tr><td>RUB</td><td>" + totals_income['RUB'] + "</td><td>" + totals_expenses['RUB'] + "</td><td>" + totals["RUB"] + "</td></tr>";
+      totals_html += "<thead><th>Currency</th><th>Income</th><th>Income/day</th><th>Expenses</th><th>Expenses/day</th><th>Total</th><th>Total/day</th></thead>";
+
+      currencies = ['BYN', 'USD', 'EUR', 'PLN', 'RUB'];
+      currencies.forEach((currency) => {
+        if (totals_income[currency] != 0 || totals_expenses[currency] != 0) {
+          totals_html += "<tr>";
+          totals_html += "<td>" + currency + "</td>";
+          totals_html += "<td>" + totals_income[currency].toFixed(2) + "</td>";
+          totals_html += "<td>" + (totals_income[currency] / period_days).toFixed(2) + "</td>";
+          totals_html += "<td>" + totals_expenses[currency].toFixed(2) + "</td>";
+          totals_html += "<td>" + (totals_expenses[currency] / period_days).toFixed(2) + "</td>";
+          totals_html += "<td>" + totals[currency].toFixed(2) + "</td>";
+          totals_html += "<td>" + (totals[currency] / period_days).toFixed(2) + "</td>";
+          totals_html += "</tr>";
+        }
+      });
+
       totals_html += "</table>";
 
       document.getElementById('totals').innerHTML = totals_html;
@@ -210,20 +233,16 @@
       </div>
     </nav>
     <div class="container-fluid">
+      <br>
+
       <form id="form" action="${EXPENSES_UI_BACKEND_HOST}/expenses" method="get">
-        <div class="row">
-          <div class="col mb-3 mt-3">
-            <div class="row">
-              <label for="from" class="col form-label">From:</label>
-              <input type="date" class="col form-control" id="from" name="from" onchange="enumerate()">
-            </div>
-          </div>
-          <div class="col mb-3 mt-3">
-            <div class="row">
-              <label for="to" class="col form-label">To:</label>
-              <input type="date" class="col form-control" id="to" name="to" onchange="enumerate()">
-            </div>
-          </div>
+        <div class="input-group input-group-lg mb-3">
+          <span class="input-group-text">From</span>
+          <input type="date" class="form-control" id="from" name="from" onchange="enumerate()">
+        </div>
+        <div class="input-group input-group-lg mb-3">
+          <span class="input-group-text">To</span>
+          <input type="date" class="form-control" id="to" name="to" onchange="enumerate()">
         </div>
       </form>
 
@@ -233,10 +252,8 @@
 
       <br>
 
-      <!-- Button to Open the Add Modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
-        Add expense
-      </button>
+      <h3 style="display:inline;">Expenses</h3>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal" style="display:inline;">Add expense</button>
 
       <!-- The Add Modal -->
       <div class="modal" id="addModal">
@@ -251,7 +268,7 @@
 
             <!-- Add Modal body -->
             <div class="modal-body">
-             <form id="form2" action="${EXPENSES_UI_BACKEND_HOST}/expenses" method="post">
+              <form id="form2" action="${EXPENSES_UI_BACKEND_HOST}/expenses" method="post">
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Date</span>
                   <input type="date" class="form-control" id="newDate" name="date">
@@ -278,7 +295,7 @@
                   <span class="input-group-text">Notes</span>
                   <input type="text" class="form-control" id="newNotes" placeholder="bag of walnuts" name="notes">
                 </div>
-            </form>
+              </form>
             </div>
 
             <!-- Add Modal footer -->
@@ -287,7 +304,7 @@
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
 
-          </div>
+          </div></div>
         </div>
       </div>
 
