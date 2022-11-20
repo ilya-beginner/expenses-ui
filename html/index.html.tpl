@@ -190,7 +190,7 @@
 
       document.getElementById('table').innerHTML = content;
 
-      period_days = (Math.abs(new Date(document.getElementById('to').value) - new Date(document.getElementById('from').value)) + 1) / 86400000;
+      period_days = (Math.abs(new Date(document.getElementById('to').value) - new Date(document.getElementById('from').value)) + 86400000) / 86400000;
 
       totals_html = "<h3>Totals</h3>";
       totals_html += '<table class="table table-striped table-hover table-sm">';
