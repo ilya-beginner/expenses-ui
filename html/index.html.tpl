@@ -26,17 +26,14 @@
   </script>
   <script>
     async function deleteExpense(id) {
-      try {
-        response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id.toString(), {method: "DELETE"});
-      } catch (err) {
-        alert(err);
-      }
+      response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id.toString(), {method: "DELETE"});
+
+      return response.status;
     }
   </script>
   <script>
     async function addExpense(date, sum, currency, tag, notes) {
-      try {
-        response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses", {
+      response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses", {
           method: "POST",
           body: JSON.stringify({
             date: date,
@@ -48,31 +45,28 @@
           headers: {
             "Content-Type": "application/json",
           },
-        });
-      } catch (err) {
-        alert(err);
-      }
+      });
+
+      return response.status;
     }
   </script>
   <script>
     async function editExpense(id, date, sum, currency, tag, notes) {
-      try {
-        response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id, {
-          method: "PATCH",
-          body: JSON.stringify({
-            date: date,
-            sum: sum,
-            currency: currency,
-            tag: tag,
-            notes: notes
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-      } catch (err) {
-        alert(err);
-      }
+      response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id, {
+        method: "PATCH",
+        body: JSON.stringify({
+          date: date,
+          sum: sum,
+          currency: currency,
+          tag: tag,
+          notes: notes
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      return response.status;
     }
   </script>
   <script>
@@ -83,12 +77,37 @@
       tag = document.getElementById('newTag').value;
       notes = document.getElementById('newNotes').value;
 
-      await addExpense(date, sum, currency, tag, notes);
+      status = await addExpense(date, sum, currency, tag, notes);
 
-      document.getElementById('newSum').value = '';
-      document.getElementById('newCurrency').value = 'BYN';
-      document.getElementById('newTag').value = '';
-      document.getElementById('newNotes').value = '';
+      if (status == 201) {
+        alert("Success!");
+
+        from = new Date(document.getElementById('from').value);
+        to = new Date(document.getElementById('to').value);
+
+        new_from = new Date(Math.min(from, new Date(date)));
+        new_to = new Date(Math.max(to, new Date(date)));
+
+        if (new_from != from || new_to != to) {
+          tzoffset = (new Date()).getTimezoneOffset() * 60000;
+
+          new_from_localISOTime = (new Date(new_from - tzoffset)).toISOString().slice(0, 10);
+          new_to_localISOTime = (new Date(new_to - tzoffset)).toISOString().slice(0, 10);
+
+          document.getElementById('from').value = new_from_localISOTime;
+          document.getElementById('to').value = new_to_localISOTime;
+        }
+
+        await enumerate();
+
+        document.getElementById('newSum').value = '';
+        document.getElementById('newCurrency').value = 'BYN';
+        document.getElementById('newTag').value = '';
+        document.getElementById('newNotes').value = '';
+      }
+      else {
+        alert("Error");
+      }
     }
   </script>
   <script>
@@ -113,7 +132,15 @@
       tag = document.getElementById('editTag').value;
       notes = document.getElementById('editNotes').value;
 
-      await editExpense(id, date, sum, currency, tag, notes);
+      status = await editExpense(id, date, sum, currency, tag, notes);
+
+      if (status == 204) {
+        alert("Success!");
+        await enumerate();
+      }
+      else {
+        alert("Error");
+      }
     }
   </script>
   <script>
@@ -125,7 +152,16 @@
     async function onDelete2(id) {
       id = document.getElementById('deleteId').value;
 
-      await deleteExpense(id);
+      status = await deleteExpense(id);
+
+      if (status == 200) {
+        alert("Success!");
+        await enumerate();
+        document.getElementById('closeDeleteModal').click();
+      }
+      else {
+        alert("Error");
+      }
     }
   </script>
   <script>
@@ -394,7 +430,7 @@
             <!-- Delete Modal footer -->
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" onclick="onDelete2()">Yes, I want to remove this expense</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="closeDeleteModal">Close</button>
             </div>
 
           </div>
