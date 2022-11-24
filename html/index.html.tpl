@@ -253,7 +253,7 @@
       <br>
 
       <h3 style="display:inline;">Expenses</h3>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal" style="display:inline;">Add expense</button>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal" style="display:inline;">Add</button>
 
       <!-- The Add Modal -->
       <div class="modal" id="addModal">
