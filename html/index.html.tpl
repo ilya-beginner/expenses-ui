@@ -262,7 +262,7 @@
 
             <!-- Add Modal Header -->
             <div class="modal-header">
-              <h4 class="modal-title">New expense</h4>
+              <h4 class="modal-title">Add expense</h4>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
