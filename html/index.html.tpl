@@ -117,6 +117,18 @@
     }
   </script>
   <script>
+    async function onDelete(id) {
+      document.getElementById('deleteId').value = id;
+    }
+  </script>
+  <script>
+    async function onDelete2(id) {
+      id = document.getElementById('deleteId').value;
+
+      await deleteExpense(id);
+    }
+  </script>
+  <script>
     async function enumerate() {
       from = document.getElementById('from').value;
       to = document.getElementById('to').value;
@@ -181,7 +193,7 @@
         content += '<td style="width:1px; white-space:nowrap;">';
         content += '<div class="btn-group">';
         content += '<button type="button" class="btn btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editModal" onclick="onEdit(' + expense["id"] + ')">Edit</button>';
-        content += '<button type="button" class="btn btn-danger" onclick="deleteExpense(' + expense["id"] + ')">Delete</button>';
+        content += '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="onDelete(' + expense["id"] + ')">Delete</button>';
         content += '</div>';
         content += '</td>';
         content += '</tr>';
@@ -355,6 +367,33 @@
             <!-- Edit Modal footer -->
             <div class="modal-footer">
               <button type="button" class="btn btn-success" onclick="onEdit2()">Save</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- The Delete Modal -->
+      <div class="modal" id="deleteModal">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+
+            <!-- Delete Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Delete expense</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Delete Modal body -->
+            <div class="modal-body">
+              <div id="deleteId"></div>
+              <h3>Are you sure? You cannot recover deleted expense</h3>
+            </div>
+
+            <!-- Delete Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" onclick="onDelete2()">Yes, I want to remove this expense</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
 
