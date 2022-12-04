@@ -208,7 +208,7 @@
       };
       data.forEach((expense) => {
         if (expense['date'] != date) {
-          content += '<tr class="table-secondary"><td colspan="6"><h3><span class="badge bg-secondary">' + expense['date'] + '</span></h3></td></tr>';
+          content += '<tr class="info"><td colspan="6"><input type="date" disabled class="form-control" style="font-weight: bold;" value="' + expense['date'] + '"></td></tr>';
           date = expense['date'];
         }
 
