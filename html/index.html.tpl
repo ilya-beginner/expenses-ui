@@ -3,7 +3,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
     .btn-square-md {
-      width: 50px !important;
+      /* width: 50px !important; */
       max-width: 100% !important;
       max-height: 100% !important;
       height: 50px !important;
@@ -77,7 +77,7 @@
       status = await addExpense(date, sum, currency, tag, notes);
 
       if (status == 201) {
-        alert("Success!");
+        document.getElementById('add-alert').innerHTML = '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Success!</strong> Expense added</div>';
 
         from = new Date(document.getElementById('from').value);
         to = new Date(document.getElementById('to').value);
@@ -103,7 +103,7 @@
         document.getElementById('newNotes').value = '';
       }
       else {
-        alert("Error");
+        document.getElementById('add-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to add expense</div>';
       }
     }
   </script>
@@ -132,11 +132,11 @@
       status = await editExpense(id, date, sum, currency, tag, notes);
 
       if (status == 204) {
-        alert("Success!");
+        document.getElementById('edit-alert').innerHTML = '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Success!</strong> Expense modified</div>';
         await enumerate();
       }
       else {
-        alert("Error");
+        document.getElementById('edit-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to modify expense</div>';
       }
     }
   </script>
@@ -160,11 +160,11 @@
       status = await deleteExpense(id);
 
       if (status == 200) {
-        alert("Success!");
         await enumerate();
         document.getElementById('closeDeleteModal').click();
       }
       else {
+        document.getElementById('delete-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to delete expense</div>';
         alert("Error");
       }
     }
@@ -245,8 +245,7 @@
 
       period_days = (Math.abs(new Date(document.getElementById('to').value) - new Date(document.getElementById('from').value)) + 86400000) / 86400000;
 
-      totals_html = "<h3>Totals</h3>";
-      totals_html += '<table class="table table-striped table-hover table-responsive vw-100">';
+      totals_html = '<table class="table table-striped table-hover table-responsive vw-100">';
       totals_html += "<thead><th>Currency</th><th>Income</th><th>Income/day</th><th>Expenses</th><th>Expenses/day</th><th>Total</th><th>Total/day</th></thead>";
 
       currencies = ['BYN', 'USD', 'EUR', 'PLN', 'RUB'];
@@ -287,29 +286,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <div class="container-fluid">
 
-          <a class="navbar-brand" href="#">Expense Tracker</a>
-          <div class="input-group input-group-lg">
-            <span class="input-group-text">From</span>
-            <input type="date" class="form-control" id="from" name="from">
-          </div>
-          <div class="input-group input-group-lg">
-            <span class="input-group-text">To</span>
-            <input type="date" class="form-control" id="to" name="to">
-          </div>
-          <div class="btn-group">
-          <button type="button" class="btn btn-light btn-square-md" onclick="enumerate()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-            </svg>
-          </button>
-        </div>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Expense Tracker</a>
+            <div class="input-group input-group-lg">
+              <span class="input-group-text">From</span>
+              <input type="date" class="form-control" id="from" name="from">
+            </div>
+
+            <div class="input-group input-group-lg">
+              <span class="input-group-text">To</span>
+              <input type="date" class="form-control" id="to" name="to">
+            </div>
+
+            <button type="button" class="btn btn-light btn-lg btn-square-md w-100" onclick="enumerate()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+              </svg>
+            </button>
       </div>
     </nav>
+
     <div class="container-fluid">
 
       <br>
+
+      <h3 style="display:inline;">Totals</h3>
 
       <div class="table-responsive">
         <div class="table-responsive" id="totals"></div>
@@ -365,6 +367,7 @@
 
             <!-- Add Modal footer -->
             <div class="modal-footer">
+              <div id="add-alert"></div>
               <button type="button" class="btn btn-success" onclick="onAdd()">Save</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
@@ -419,6 +422,7 @@
 
             <!-- Edit Modal footer -->
             <div class="modal-footer">
+              <div id="edit-alert"></div>
               <button type="button" class="btn btn-success" onclick="onEdit2()">Save</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
@@ -474,6 +478,7 @@
             <!-- Delete Modal footer -->
             <div class="modal-footer">
               <h3>Are you sure? You cannot recover deleted expense</h3>
+              <div id="delete-alert"></div>
               <button type="button" class="btn btn-danger" onclick="onDelete2()">Yes, I want to remove this expense</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="closeDeleteModal">Close</button>
             </div>
