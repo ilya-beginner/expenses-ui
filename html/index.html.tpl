@@ -268,19 +268,19 @@
       period_days = (Math.abs(new Date(document.getElementById('to').value) - new Date(document.getElementById('from').value)) + 86400000) / 86400000;
 
       totals_html = '<table class="table table-striped table-hover table-responsive vw-100">';
-      totals_html += "<thead><th>Currency</th><th>Income</th><th>Income/day</th><th>Expenses</th><th>Expenses/day</th><th>Total</th><th>Total/day</th></thead>";
+      totals_html += "<thead><th>Currency</th><th>Total</th><th>Total/day</th><th>Income</th><th>Income/day</th><th>Expenses</th><th>Expenses/day</th></thead>";
 
       currencies = ['BYN', 'USD', 'EUR', 'PLN', 'RUB'];
       currencies.forEach((currency) => {
         if (totals_income[currency] != 0 || totals_expenses[currency] != 0) {
           totals_html += "<tr>";
           totals_html += "<td>" + currency + "</td>";
+          totals_html += "<td>" + totals[currency].toFixed(2) + "</td>";
+          totals_html += "<td>" + (totals[currency] / period_days).toFixed(2) + "</td>";
           totals_html += "<td>" + totals_income[currency].toFixed(2) + "</td>";
           totals_html += "<td>" + (totals_income[currency] / period_days).toFixed(2) + "</td>";
           totals_html += "<td>" + totals_expenses[currency].toFixed(2) + "</td>";
           totals_html += "<td>" + (totals_expenses[currency] / period_days).toFixed(2) + "</td>";
-          totals_html += "<td>" + totals[currency].toFixed(2) + "</td>";
-          totals_html += "<td>" + (totals[currency] / period_days).toFixed(2) + "</td>";
           totals_html += "</tr>";
         }
       });
