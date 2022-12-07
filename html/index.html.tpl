@@ -77,7 +77,10 @@
       status = await addExpense(date, sum, currency, tag, notes);
 
       if (status == 201) {
-        document.getElementById('add-alert').innerHTML = '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Success!</strong> Expense added</div>';
+        document.getElementById('add-alert').innerHTML = '<div class="alert alert-success alert-dismissible fade show"><button id="add-alert-button" type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Success!</strong> Expense added</div>';
+        setTimeout(function() {
+          CloseAlert("add-alert-button")
+        }, 3000);
 
         from = new Date(document.getElementById('from').value);
         to = new Date(document.getElementById('to').value);
@@ -103,7 +106,18 @@
         document.getElementById('newNotes').value = '';
       }
       else {
-        document.getElementById('add-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to add expense</div>';
+        document.getElementById('add-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button id="add-alert-button" type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to add expense</div>';
+        setTimeout(function() {
+          CloseAlert("add-alert-button")
+        }, 3000);
+      }
+    }
+  </script>
+  <script>
+    async function CloseAlert(id) {
+      add_alert_button = document.getElementById(id);
+      if (add_alert_button !== null) {
+        add_alert_button.click();
       }
     }
   </script>
@@ -132,11 +146,17 @@
       status = await editExpense(id, date, sum, currency, tag, notes);
 
       if (status == 204) {
-        document.getElementById('edit-alert').innerHTML = '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Success!</strong> Expense modified</div>';
+        document.getElementById('edit-alert').innerHTML = '<div class="alert alert-success alert-dismissible fade show"><button id="edit-alert-button" type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Success!</strong> Expense modified</div>';
+        setTimeout(function() {
+          CloseAlert("edit-alert-button")
+        }, 3000);
         await enumerate();
       }
       else {
-        document.getElementById('edit-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to modify expense</div>';
+        document.getElementById('edit-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button id="edit-alert-button" type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to modify expense</div>';
+        setTimeout(function() {
+          CloseAlert("edit-alert-button")
+        }, 3000);
       }
     }
   </script>
@@ -164,8 +184,10 @@
         document.getElementById('closeDeleteModal').click();
       }
       else {
-        document.getElementById('delete-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to delete expense</div>';
-        alert("Error");
+        document.getElementById('delete-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button id="delete-alert-button" type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to delete expense</div>';
+        setTimeout(function() {
+          CloseAlert("delete-alert-button")
+        }, 3000);
       }
     }
   </script>
@@ -276,11 +298,6 @@
         document.getElementById('to').value = localISOTime;
         document.getElementById('newDate').value = localISOTime;
         enumerate();
-    }
-  </script>
-  <script>
-    async function showAlert(success, message) {
-
     }
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
