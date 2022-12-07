@@ -360,10 +360,7 @@
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Sum</span>
                   <input type="number" class="form-control" id="newSum" placeholder="-1.00" name="sum">
-                </div>
-                <div class="input-group input-group-lg mb-3">
-                  <span class="input-group-text">Currency</span>
-                  <select id="newCurrency" name="currency" form="form2" class="form-select form-select-lg" aria-label=".form-select-lg example">
+                  <select id="newCurrency" name="currency" form="form2" class="form-select form-select-lg">
                     <option value="BYN">BYN</option>
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
@@ -415,9 +412,6 @@
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Sum</span>
                   <input type="number" class="form-control" id="editSum" placeholder="-1.00" name="sum">
-                </div>
-                <div class="input-group input-group-lg mb-3">
-                  <span class="input-group-text">Currency</span>
                   <select id="editCurrency" name="currency" form="form3" class="form-select form-select-lg" aria-label=".form-select-lg example">
                     <option value="BYN">BYN</option>
                     <option value="USD">USD</option>
@@ -470,9 +464,6 @@
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Sum</span>
                   <input type="number" disabled class="form-control" id="deleteSum" name="sum">
-                </div>
-                <div class="input-group input-group-lg mb-3">
-                  <span class="input-group-text">Currency</span>
                   <select id="deleteCurrency" name="currency" form="form3" disabled class="form-select form-select-lg" aria-label=".form-select-lg example">
                     <option value="BYN">BYN</option>
                     <option value="USD">USD</option>
