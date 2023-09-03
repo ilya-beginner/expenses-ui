@@ -204,7 +204,7 @@
 
       columns = ["sum", "currency", "tag", "notes"];
 
-      content = '<table id="tmp-table" class="table table-striped table-hover table-responsive vw-100"><thead><tr>';
+      content = '<table id="tmp-table" class="table table-striped table-hover table-responsive"><thead><tr>';
       columns.forEach((column) => {
         content += '<th>' + capitalizeFirstLetter(column) + '</th>';
       });
@@ -267,7 +267,7 @@
 
       period_days = (Math.abs(new Date(document.getElementById('to').value) - new Date(document.getElementById('from').value)) + 86400000) / 86400000;
 
-      totals_html = '<table class="table table-striped table-hover table-responsive vw-100">';
+      totals_html = '<table class="table table-striped table-hover table-responsive">';
       totals_html += "<thead><th>Currency</th><th>Total</th><th>Total/day</th><th>Income</th><th>Income/day</th><th>Expenses</th><th>Expenses/day</th></thead>";
 
       currencies = ['BYN', 'USD', 'EUR', 'PLN', 'RUB'];
