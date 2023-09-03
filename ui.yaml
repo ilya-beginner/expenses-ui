@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  ui:
+    image: "${EXPENSES_UI_IMAGE}"
+    container_name: "expenses-ui"
+    ports:
+      - "${EXPENSES_UI_PORT}:80"
+    networks:
+      - default
+    env_file:
+      - ui.env
+    init: true
+
+networks:
+  default:
+    driver: bridge
