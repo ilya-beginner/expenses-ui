@@ -17,6 +17,9 @@
       if (column == 'sum') {
         return value.toFixed(2);
       }
+      else if (column == 'date') {
+        return new Date(value).toLocaleDateString()
+      }
 
       return value;
     }
@@ -202,7 +205,7 @@
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
 
-      columns = ["sum", "currency", "tag", "notes"];
+      columns = ["date", "sum", "currency", "tag", "notes"];
 
       content = '<table id="tmp-table" class="table table-striped table-hover table-responsive"><thead><tr>';
       columns.forEach((column) => {
@@ -211,7 +214,6 @@
       content += '<th style="width:1px; white-space:nowrap;"></th>';
       content += "</tr></thead>";
 
-      date = null;
       totals_income = {
         'BYN': 0,
         'USD': 0,
@@ -234,11 +236,6 @@
         'RUB': 0
       };
       data.forEach((expense) => {
-        if (expense['date'] != date) {
-          content += '<tr class="info"><td colspan="6"><input type="date" disabled class="form-control" style="font-weight: bold;" value="' + expense['date'] + '"></td></tr>';
-          date = expense['date'];
-        }
-
         if (expense['sum'] > 0) {
           totals_income[expense['currency']] += expense['sum'];
         }
