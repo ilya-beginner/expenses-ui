@@ -13,25 +13,38 @@
     }
   </style>
   <script>
-    function formatValue(column, value) {
-      if (column == 'sum') {
-        return value.toFixed(2);
-      }
-      else if (column == 'date') {
-        return new Date(value).toLocaleDateString()
-      }
-
-      return value;
+    function formatSum(number) {
+      return Math.abs(number).toFixed(2);
     }
-  </script>
-  <script>
+
+    function formatDate(iso_date) {
+      return new Date(iso_date).toLocaleDateString()
+    }
+
+    function formatType(sum) {
+      if (sum < 0) {
+        return "&#x1F4B8";
+      }
+      else {
+        return "&#x1F4B0";
+      }
+    }
+
+    function formatType2(sum) {
+      if (sum < 0) {
+        return "expense";
+      }
+      else {
+        return "income";
+      }
+    }
+
     async function deleteExpense(id) {
       response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id.toString(), {method: "DELETE"});
 
       return response.status;
     }
-  </script>
-  <script>
+
     async function addExpense(date, sum, currency, tag, notes) {
       response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses", {
           method: "POST",
@@ -49,8 +62,7 @@
 
       return response.status;
     }
-  </script>
-  <script>
+
     async function editExpense(id, date, sum, currency, tag, notes) {
       response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id, {
         method: "PATCH",
@@ -68,14 +80,18 @@
 
       return response.status;
     }
-  </script>
-  <script>
+
     async function onAdd() {
       date = document.getElementById('newDate').value;
+      type = document.getElementById('newType').value;
       sum = document.getElementById('newSum').value;
       currency = document.getElementById('newCurrency').value;
       tag = document.getElementById('newTag').value;
       notes = document.getElementById('newNotes').value;
+
+      if (type == "expense") {
+        sum =  -1.00 * sum;
+      }
 
       status = await addExpense(date, sum, currency, tag, notes);
 
@@ -103,6 +119,7 @@
 
         await enumerate();
 
+        document.getElementById('newType').value = 'expense';
         document.getElementById('newSum').value = '';
         document.getElementById('newCurrency').value = 'BYN';
         document.getElementById('newTag').value = '';
@@ -115,36 +132,39 @@
         }, 3000);
       }
     }
-  </script>
-  <script>
+
     async function CloseAlert(id) {
       add_alert_button = document.getElementById(id);
       if (add_alert_button !== null) {
         add_alert_button.click();
       }
     }
-  </script>
-  <script>
+
     async function onEdit(id) {
       response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id);
       data = await response.json();
 
       document.getElementById('editId').value = id;
       document.getElementById('editDate').value = data[0]['date'];
-      document.getElementById('editSum').value = data[0]['sum'];
+      document.getElementById('editType').value = formatType2(data[0]['sum']);
+      document.getElementById('editSum').value = formatSum(data[0]['sum']);
       document.getElementById('editCurrency').value = data[0]['currency'];
       document.getElementById('editTag').value = data[0]['tag'];
       document.getElementById('editNotes').value = data[0]['notes'];
     }
-  </script>
-  <script>
+
     async function onEdit2() {
       id = document.getElementById('editId').value;
+      type = document.getElementById('editType').value;
       date = document.getElementById('editDate').value;
       sum = document.getElementById('editSum').value;
       currency = document.getElementById('editCurrency').value;
       tag = document.getElementById('editTag').value;
       notes = document.getElementById('editNotes').value;
+
+      if (type == "expense") {
+        sum =  -1.00 * sum;
+      }
 
       status = await editExpense(id, date, sum, currency, tag, notes);
 
@@ -162,21 +182,20 @@
         }, 3000);
       }
     }
-  </script>
-  <script>
+
     async function onDelete(id) {
       response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses/" + id);
       data = await response.json();
 
       document.getElementById('deleteId').value = id;
       document.getElementById('deleteDate').value = data[0]['date'];
-      document.getElementById('deleteSum').value = data[0]['sum'];
+      document.getElementById('deleteType').value = formatType2(data[0]['sum']);
+      document.getElementById('deleteSum').value = formatSum(data[0]['sum']);
       document.getElementById('deleteCurrency').value = data[0]['currency'];
       document.getElementById('deleteTag').value = data[0]['tag'];
       document.getElementById('deleteNotes').value = data[0]['notes'];
     }
-  </script>
-  <script>
+
     async function onDelete2() {
       id = document.getElementById('deleteId').value;
 
@@ -193,23 +212,18 @@
         }, 3000);
       }
     }
-  </script>
-  <script>
+
     async function enumerate() {
       from = document.getElementById('from').value;
       to = document.getElementById('to').value;
       response = await fetch("${EXPENSES_UI_BACKEND_HOST}/expenses?from=" + from + "&to=" + to);
       data = await response.json();
 
-      function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-      }
-
-      columns = ["date", "sum", "currency", "tag", "notes"];
+      columns = ["Date", "Type", "Sum", "Currency", "Tag", "Notes"];
 
       content = '<table id="tmp-table" class="table table-striped table-hover table-responsive"><thead><tr>';
       columns.forEach((column) => {
-        content += '<th>' + capitalizeFirstLetter(column) + '</th>';
+        content += '<th>' + column + '</th>';
       });
       content += '<th style="width:1px; white-space:nowrap;"></th>';
       content += "</tr></thead>";
@@ -247,9 +261,13 @@
 
         content += '<tr>';
 
-        columns.forEach((column) => {
-          content += '<td>' + formatValue(column, expense[column]) + '</td>';
-        });
+        content += '<td>' + formatDate(expense['date']) + '</td>';
+        content += '<td>' + formatType(expense['sum']) + '</td>';
+        content += '<td>' + formatSum(expense['sum']) + '</td>';
+        content += '<td>' + expense['currency'] + '</td>';
+        content += '<td>' + expense['tag'] + '</td>';
+        content += '<td>' + expense['notes'] + '</td>';
+
         content += '<td style="width:1px; white-space:nowrap;">';
         content += '<div class="btn-group">';
         content += '<button type="button" class="btn btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editModal" onclick="onEdit(' + expense["id"] + ')">Edit</button>';
@@ -286,8 +304,7 @@
 
       document.getElementById('totals').innerHTML = totals_html;
     }
-  </script>
-  <script>
+
     window.onload=function() {
         tzoffset = (new Date()).getTimezoneOffset() * 60000;
         localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, 10);
@@ -355,8 +372,15 @@
                   <input type="date" class="form-control" id="newDate" name="date">
                 </div>
                 <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Type</span>
+                  <select id="newType" name="type" form="form2" class="form-select form-select-lg">
+                    <option value="expense">&#x1F4B8 Expense</option>
+                    <option value="income">&#x1F4B0 Income</option>
+                  </select>
+                </div>
+                <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Sum</span>
-                  <input type="number" class="form-control" id="newSum" placeholder="-1.00" name="sum">
+                  <input type="number" class="form-control" id="newSum" placeholder="(mandatory field)" name="sum">
                   <select id="newCurrency" name="currency" form="form2" class="form-select form-select-lg">
                     <option value="BYN">BYN</option>
                     <option value="USD">USD</option>
@@ -367,11 +391,11 @@
                 </div>
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Tag</span>
-                  <input type="text" class="form-control" id="newTag" placeholder="food" name="tag">
+                  <input type="text" class="form-control" id="newTag" placeholder="(optional field)" name="tag">
                 </div>
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Notes</span>
-                  <input type="text" class="form-control" id="newNotes" placeholder="bag of walnuts" name="notes">
+                  <input type="text" class="form-control" id="newNotes" placeholder="(optional field)" name="notes">
                 </div>
               </form>
             </div>
@@ -407,8 +431,15 @@
                   <input type="date" class="form-control" id="editDate" name="date">
                 </div>
                 <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Type</span>
+                  <select id="editType" name="type" form="form3" class="form-select form-select-lg">
+                    <option value="expense">&#x1F4B8 Expense</option>
+                    <option value="income">&#x1F4B0 Income</option>
+                  </select>
+                </div>
+                <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Sum</span>
-                  <input type="number" class="form-control" id="editSum" placeholder="-1.00" name="sum">
+                  <input type="number" class="form-control" id="editSum" placeholder="(mandatory field)" name="sum">
                   <select id="editCurrency" name="currency" form="form3" class="form-select form-select-lg" aria-label=".form-select-lg example">
                     <option value="BYN">BYN</option>
                     <option value="USD">USD</option>
@@ -419,11 +450,11 @@
                 </div>
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Tag</span>
-                  <input type="text" class="form-control" id="editTag" placeholder="food" name="tag">
+                  <input type="text" class="form-control" id="editTag" placeholder="(optional field)" name="tag">
                 </div>
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Notes</span>
-                  <input type="text" class="form-control" id="editNotes" placeholder="bag of walnuts" name="notes">
+                  <input type="text" class="form-control" id="editNotes" placeholder="(optional field)" name="notes">
                 </div>
             </form>
             </div>
@@ -457,6 +488,13 @@
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Date</span>
                   <input type="date" disabled class="form-control" id="deleteDate" name="date">
+                </div>
+                <div class="input-group input-group-lg mb-3">
+                  <span class="input-group-text">Type</span>
+                  <select id="deleteType" name="type" form="form3" disabled class="form-select form-select-lg">
+                    <option value="expense">&#x1F4B8 Expense</option>
+                    <option value="income">&#x1F4B0 Income</option>
+                  </select>
                 </div>
                 <div class="input-group input-group-lg mb-3">
                   <span class="input-group-text">Sum</span>
