@@ -354,6 +354,12 @@
       <h3 style="display:inline;">Expenses</h3>
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal" style="display:inline;">Add</button>
 
+      <br>
+
+      <div class="table-responsive">
+        <div class="table-responsive" id="expenses_table"></div>
+      </div>
+
       <!-- The Add Modal -->
       <div class="modal" id="addModal">
         <div class="modal-dialog modal-xl">
@@ -529,12 +535,6 @@
 
           </div>
         </div>
-      </div>
-
-      <br>
-
-      <div class="table-responsive">
-        <div class="table-responsive" id="expenses_table"></div>
       </div>
 
     </div>
