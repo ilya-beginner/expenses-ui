@@ -221,12 +221,13 @@
 
       columns = ["Date", "Type", "Sum", "Currency", "Tag", "Notes"];
 
-      content = '<table id="tmp-table" class="table table-striped table-hover table-responsive"><thead><tr>';
+      expenses_html = '<table class="table table-striped table-hover table-responsive"><thead><tr>';
       columns.forEach((column) => {
-        content += '<th>' + column + '</th>';
+        expenses_html += '<th>' + column + '</th>';
       });
-      content += '<th style="width:1px; white-space:nowrap;"></th>';
-      content += "</tr></thead>";
+
+      expenses_html += '<th style="width:1px; white-space:nowrap;"></th>';
+      expenses_html += "</tr></thead>";
 
       totals_income = {
         'BYN': 0,
@@ -259,26 +260,26 @@
 
         totals[expense['currency']] += expense['sum'];
 
-        content += '<tr>';
+        expenses_html += '<tr>';
 
-        content += '<td>' + formatDate(expense['date']) + '</td>';
-        content += '<td>' + formatType(expense['sum']) + '</td>';
-        content += '<td>' + formatSum(expense['sum']) + '</td>';
-        content += '<td>' + expense['currency'] + '</td>';
-        content += '<td>' + expense['tag'] + '</td>';
-        content += '<td>' + expense['notes'] + '</td>';
+        expenses_html += '<td>' + formatDate(expense['date']) + '</td>';
+        expenses_html += '<td>' + formatType(expense['sum']) + '</td>';
+        expenses_html += '<td>' + formatSum(expense['sum']) + '</td>';
+        expenses_html += '<td>' + expense['currency'] + '</td>';
+        expenses_html += '<td>' + expense['tag'] + '</td>';
+        expenses_html += '<td>' + expense['notes'] + '</td>';
 
-        content += '<td style="width:1px; white-space:nowrap;">';
-        content += '<div class="btn-group">';
-        content += '<button type="button" class="btn btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editModal" onclick="onEdit(' + expense["id"] + ')">Edit</button>';
-        content += '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="onDelete(' + expense["id"] + ')">Delete</button>';
-        content += '</div>';
-        content += '</td>';
-        content += '</tr>';
+        expenses_html += '<td style="width:1px; white-space:nowrap;">';
+        expenses_html += '<div class="btn-group">';
+        expenses_html += '<button type="button" class="btn btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editModal" onclick="onEdit(' + expense["id"] + ')">Edit</button>';
+        expenses_html += '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="onDelete(' + expense["id"] + ')">Delete</button>';
+        expenses_html += '</div>';
+        expenses_html += '</td>';
+        expenses_html += '</tr>';
       });
-      content += "</table>";
+      expenses_html += "</table>";
 
-      document.getElementById('table').innerHTML = content;
+      document.getElementById('expenses_table').innerHTML = expenses_html;
 
       period_days = (Math.abs(new Date(document.getElementById('to').value) - new Date(document.getElementById('from').value)) + 86400000) / 86400000;
 
@@ -302,7 +303,7 @@
 
       totals_html += "</table>";
 
-      document.getElementById('totals').innerHTML = totals_html;
+      document.getElementById('totals_table').innerHTML = totals_html;
     }
 
     window.onload=function() {
@@ -345,7 +346,7 @@
       <h3 style="display:inline;">Totals</h3>
 
       <div class="table-responsive">
-        <div class="table-responsive" id="totals"></div>
+        <div class="table-responsive" id="totals_table"></div>
       </div>
 
       <br>
@@ -533,7 +534,7 @@
       <br>
 
       <div class="table-responsive">
-        <div class="table-responsive" id="table"></div>
+        <div class="table-responsive" id="expenses_table"></div>
       </div>
 
     </div>
