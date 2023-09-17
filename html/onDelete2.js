@@ -4,7 +4,7 @@ async function onDelete2() {
     status = await deleteExpense(id);
 
     if (status == 200) {
-        await enumerate();
+        await enumerateExpenses();
         document.getElementById('closeDeleteModal').click();
     }
     else {

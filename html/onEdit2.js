@@ -18,7 +18,8 @@ async function onEdit2() {
         setTimeout(function () {
             CloseAlert("edit-alert-button")
         }, 3000);
-        await enumerate();
+        recomputeTime(date);
+        await enumerateExpenses();
     }
     else {
         document.getElementById('edit-alert').innerHTML = '<div class="alert alert-danger alert-dismissible fade show"><button id="edit-alert-button" type="button" class="btn-close" data-bs-dismiss="alert"></button><strong>Error!</strong> Failed to modify expense</div>';
