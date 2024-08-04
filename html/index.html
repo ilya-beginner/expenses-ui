@@ -7,6 +7,8 @@
 <script src="deleteExpense.js"></script>
 <script src="editExpense.js"></script>
 <script src="enumerateExpenses.js"></script>
+<script src="enumerateExpensesDesktop.js"></script>
+<script src="enumerateExpensesMobile.js"></script>
 <script src="formatDate.js"></script>
 <script src="formatSum.js"></script>
 <script src="formatType.js"></script>
@@ -17,6 +19,7 @@
 <script src="onEdit.js"></script>
 <script src="onEdit2.js"></script>
 <script src="onloadExpenses.js"></script>
+<script src="onWindowResize.js"></script>
 <script src="recomputeTime.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -64,9 +67,7 @@
 
     <br>
 
-    <div class="table-responsive">
-      <div class="table-responsive" id="expenses_table"></div>
-    </div>
+    <div id="expenses-div" class="table-responsive"></div>
 
     <!-- The Add Modal -->
     <div class="modal" id="addModal">
@@ -250,5 +251,38 @@
 
   </div>
 </body>
+
+<template id="row-template">
+  <tr>
+    <td>
+      <div class="contaner p-2 border border-dark rounded bg-light">
+        <div>
+          <div class="p-1">
+            <span id="date" class="badge badge-primary bg-dark"></span>
+            <span id="type"></span>
+            <span id="sum"></span>
+            <span id="currency"></span>
+          </div>
+          <div hidden id="tag-div">
+            <b>Tag: </b><span id="tag-span" class="badge badge-primary bg-dark"></span>
+          </div>
+          <div hidden id="notes-div">
+            <b>Notes: </b><span id="notes-span"></span>
+          </div>
+        </div>
+        <div class="p-1 btn-group d-flex" role="group">
+          <button id="edit-button" type="button" class="btn btn-sm btn-warning me-1 btn-block" data-bs-toggle="modal"
+            data-bs-target="#editModal">Edit</button>
+          <button id="delete-button" type="button" class="btn btn-sm btn-danger btn-block" data-bs-toggle="modal"
+            data-bs-target="#deleteModal">Delete</button>
+        </div>
+      </div>
+    </td>
+  </tr>
+</template>
+
+<template id="table-template">
+  <table id="expenses-table" class="table table-hover table-borderless"></table>
+</template>
 
 </html>

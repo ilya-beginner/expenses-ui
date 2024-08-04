@@ -1,8 +1,8 @@
 function formatType(sum) {
     if (sum < 0) {
-        return "&#x1F4B8";
+        return String.fromCodePoint(0x1F4B8);
     }
     else {
-        return "&#x1F4B0";
+        return String.fromCodePoint(0x1F4B0);
     }
 }
