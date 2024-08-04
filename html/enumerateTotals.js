@@ -66,4 +66,20 @@ async function enumerateTotals() {
     totals_html += "</table>";
 
     document.getElementById('totals_table').innerHTML = totals_html;
+
+    tag_distribution = new Map();
+    data.forEach((expense) => {
+        if (expense["tag"]) {
+            if (tag_distribution[expense["tag"] + ' - ' + expense["currency"]]) {
+                tag_distribution[expense["tag"] + ' - ' + expense["currency"]] += expense["sum"];
+            }
+            else {
+                tag_distribution[expense["tag"] + ' - ' + expense["currency"]] = expense["sum"];
+            }
+            
+        }
+    });
+    for (var elt in tag_distribution) {
+        document.getElementById('tags').innerHTML += (elt + ' ' + tag_distribution[elt] + '<br>');
+    }
 }
