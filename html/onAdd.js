@@ -1,8 +1,10 @@
 async function onAdd() {
     date = document.getElementById('newDate').value;
     type = document.getElementById('newType').value;
+    alert(document.getElementById('newSum').value);
+    alert(document.getElementById('newSum').value.replace(',','.'));
+    alert(parseFloat(document.getElementById('newSum').value.replace(',','.')));
     sum = parseFloat(document.getElementById('newSum').value.replace(',','.'));
-    alert(sum);
     currency = document.getElementById('newCurrency').value;
     tag = document.getElementById('newTag').value;
     notes = document.getElementById('newNotes').value;
