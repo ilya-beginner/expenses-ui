@@ -1,7 +1,7 @@
 async function onAdd() {
     date = document.getElementById('newDate').value;
     type = document.getElementById('newType').value;
-    sum = parseFloat(document.getElementById('newSum').value.replace(',','.'));
+    sum = document.getElementById('newSum').value;
     currency = document.getElementById('newCurrency').value;
     tag = document.getElementById('newTag').value;
     notes = document.getElementById('newNotes').value;

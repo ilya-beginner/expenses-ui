@@ -2,7 +2,7 @@ async function onEdit2() {
     id = document.getElementById('editId').value;
     type = document.getElementById('editType').value;
     date = document.getElementById('editDate').value;
-    sum = parseFloat(document.getElementById('editSum').value.replace(',','.'));
+    sum = document.getElementById('editSum').value;
     currency = document.getElementById('editCurrency').value;
     tag = document.getElementById('editTag').value;
     notes = document.getElementById('editNotes').value;
