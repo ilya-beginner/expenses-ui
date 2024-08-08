@@ -96,7 +96,7 @@
               </div>
               <div class="input-group input-group-lg mb-3">
                 <span class="input-group-text">Sum</span>
-                <input type="number" class="form-control" id="newSum" placeholder="(mandatory field)" name="sum">
+                <input type="number" pattern="\d*" inputmode="decimal" class="form-control" id="newSum" placeholder="(mandatory field)" name="sum">
                 <select id="newCurrency" name="currency" form="form2" class="form-select form-select-lg">
                   <option value="BYN">BYN</option>
                   <option value="USD">USD</option>
@@ -156,7 +156,7 @@
             </div>
             <div class="input-group input-group-lg mb-3">
               <span class="input-group-text">Sum</span>
-              <input type="number" class="form-control" id="editSum" placeholder="(mandatory field)" name="sum">
+              <input type="number" pattern="\d*" inputmode="decimal" class="form-control" id="editSum" placeholder="(mandatory field)" name="sum">
               <select id="editCurrency" name="currency" form="form3" class="form-select form-select-lg"
                 aria-label=".form-select-lg example">
                 <option value="BYN">BYN</option>
