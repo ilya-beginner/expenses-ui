@@ -69,17 +69,22 @@ async function enumerateTotals() {
 
     tag_distribution = new Map();
     data.forEach((expense) => {
-        if (expense["tag"]) {
-            if (tag_distribution[expense["tag"] + ' - ' + expense["currency"]]) {
-                tag_distribution[expense["tag"] + ' - ' + expense["currency"]] += expense["sum"];
-            }
-            else {
-                tag_distribution[expense["tag"] + ' - ' + expense["currency"]] = expense["sum"];
-            }
-            
+        compositeTag = expense["tag"];
+        if (expense["tag"].trim() == '') {
+            compositeTag = "{<b>without tag</b>}";
         }
+
+        tags = [];
+        compositeTag.split(',').forEach((tag) => {
+            tag = tag.trim();
+            key = tag + ' (' + expense["currency"] + ')';
+            sum = tag_distribution.get(key);
+            tag_distribution.set(key,  sum ? sum + expense["sum"] : expense["sum"]);
+        });
     });
-    for (var elt in tag_distribution) {
-        document.getElementById('tags').innerHTML += (elt + ' ' + tag_distribution[elt] + '<br>');
+    document.getElementById('tags').innerHTML = '';
+    const tag_distribution_sorted = new Map([...tag_distribution.entries()].sort());
+    for (let [key, value] of tag_distribution_sorted) {
+        document.getElementById('tags').innerHTML += (key + ' ' + value.toFixed(2) + '<br>');
     }
 }
